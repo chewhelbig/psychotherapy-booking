@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     // 1. Create Google Calendar event
     try {
       await createEvent({
-        summary: (sessionConfig ? sessionConfig.label : 'Session') + ' — ' + clientName,
+        summary: clientName + ' — ' + (sessionType === 'individual' ? 'Individual P' : 'Couples C'),
         description: [
           'Client: ' + clientName,
           'Phone: ' + clientPhone,
