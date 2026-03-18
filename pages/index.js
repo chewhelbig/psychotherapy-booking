@@ -26,7 +26,7 @@ export default function BookingPage() {
     if (!selectedDate || !sessionType) return;
     setLoading(true);
     setSelectedSlot(null);
-    const dateStr = selectedDate.toISOString().split('T')[0];
+    const dateStr = selectedDate.getFullYear() + '-' + String(selectedDate.getMonth() + 1).padStart(2, '0') + '-' + String(selectedDate.getDate()).padStart(2, '0');
     fetch(`/api/slots?date=${dateStr}&type=${sessionType}&dow=${selectedDate.getDay()}`)
       .then(r => r.json())
       .then(data => { setSlots(data.slots || []); setLoading(false); })
