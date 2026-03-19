@@ -80,6 +80,12 @@ export default function SuccessPage() {
 
           <h1>Session <em>Booked</em></h1>
 
+          {!loading && booking && (
+            <p style={{ marginTop: '1rem', fontSize: '1rem' }}>
+              Your deposit has been received and your appointment is confirmed on <strong>{booking.dateFormatted}</strong> at <strong>{booking.timeFormatted}</strong>.
+            </p>
+          )}
+
           {loading ? (
             <div className="loading" style={{ marginTop: '2rem' }}>
               <div className="spinner" />
@@ -135,7 +141,7 @@ export default function SuccessPage() {
           )}
 
           <p style={{ fontSize: '0.82rem', color: 'var(--faint)', marginTop: '2rem' }}>
-            Cancellations less than 48 hours before the session are charged in full.
+            Cancellations more than 48 hours before the session are refunded minus Stripe fees.
           </p>
 
           <div style={{ marginTop: '2rem', display: 'flex', gap: '0.8rem', justifyContent: 'center' }}>
