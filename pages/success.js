@@ -44,7 +44,7 @@ export default function SuccessPage() {
       'DTSTART;TZID=Asia/Singapore:' + start,
       'DTEND;TZID=Asia/Singapore:' + end,
       'SUMMARY:' + booking.sessionLabel + ' — Nicole Chew-Helbig',
-      'LOCATION:73 Eng Watt Street Tiong Bahru Estate Singapore 160073',
+      'LOCATION:65 Tiong Poh Road #02-26, Tiong Bahru Estate Singapore 160065',
       'DESCRIPTION:Balance due SGD ' + booking.balanceDue.toFixed(2),
       'END:VEVENT',
       'END:VCALENDAR'
@@ -109,10 +109,10 @@ export default function SuccessPage() {
               </div>
               <div style={{ marginTop: '2rem' }}>
                 <p style={{ fontFamily: 'var(--font-heading)', fontStyle: 'italic', color: 'var(--green)', fontSize: '1rem', marginBottom: '0.5rem' }}>
-                  73 Eng Watt Street, Tiong Bahru Estate
+                  65 Tiong Poh Road #02-26, Tiong Bahru Estate
                 </p>
                 <p style={{ fontSize: '0.85rem', color: 'var(--faint)' }}>
-                  Tiong Bahru MRT (EW17) · 8 min walk
+                  Havelock MRT / Near Tiong Bahru Market
                 </p>
               </div>
               <div style={{ marginTop: '2rem', display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
