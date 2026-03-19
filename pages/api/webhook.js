@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { createEvent } from '../../lib/calendar';
 import { buildWhatsAppMessage, sendWhatsAppNotification } from '../../lib/whatsapp';
+import { sendBookingEmails } from '../../lib/email';
 import { SCHEDULE } from '../../lib/schedule';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -57,7 +58,6 @@ export default async function handler(req, res) {
         ].filter(Boolean).join('\n'),
         startTime: slotStart,
         endTime: slotEnd,
-        attendeeEmail: clientEmail,
       });
       console.log('Calendar event created successfully');
     } catch (err) {
@@ -77,6 +77,21 @@ export default async function handler(req, res) {
       await sendWhatsAppNotification(msg);
     } catch (err) {
       console.error('WhatsApp notification failed:', err.message);
+    }
+
+    // 3. Send confirmation emails
+    try {
+      await sendBookingEmails({
+        clientName: clientName,
+        clientEmail: clientEmail,
+        clientPhone: clientPhone,
+        sessionType: sessionType,
+        slotStart: slotStart,
+        slotEnd: slotEnd,
+        reason: reason,
+      });
+    } catch (err) {
+      console.error('Email sending failed:', err.message);
     }
   }
 
