@@ -8,12 +8,14 @@ export default function SuccessPage() {
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(function() {
     if (!session_id) return;
     fetch('/api/booking-details?session_id=' + session_id)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        setBooking(data);
+        if (data.sessionLabel) {
+          setBooking(data);
+        }
         setLoading(false);
       })
       .catch(function() {
@@ -21,18 +23,16 @@ export default function SuccessPage() {
       });
   }, [session_id]);
 
-  // Build Google Calendar add link
   function getCalendarLink() {
     if (!booking) return '#';
     var start = booking.slotStart.replace(/[-:]/g, '').replace('+08:00', '');
     var end = booking.slotEnd.replace(/[-:]/g, '').replace('+08:00', '');
     var title = encodeURIComponent(booking.sessionLabel + ' — Nicole Chew-Helbig');
-    var details = encodeURIComponent('Psychotherapy session at 73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
+    var details = encodeURIComponent('73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
     var location = encodeURIComponent('73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + title + '&dates=' + start + '/' + end + '&details=' + details + '&location=' + location + '&ctz=Asia/Singapore';
   }
 
-  // Build .ics file download for Apple Calendar etc
   function downloadICS() {
     if (!booking) return;
     var start = booking.slotStart.replace(/[-:]/g, '').replace('+08:00', '');
@@ -44,8 +44,8 @@ export default function SuccessPage() {
       'DTSTART;TZID=Asia/Singapore:' + start,
       'DTEND;TZID=Asia/Singapore:' + end,
       'SUMMARY:' + booking.sessionLabel + ' — Nicole Chew-Helbig',
-      'LOCATION:73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073',
-      'DESCRIPTION:Balance due: SGD ' + booking.balanceDue.toFixed(2),
+      'LOCATION:73 Eng Watt Street Tiong Bahru Estate Singapore 160073',
+      'DESCRIPTION:Balance due SGD ' + booking.balanceDue.toFixed(2),
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -55,7 +55,6 @@ export default function SuccessPage() {
     a.href = url;
     a.download = 'psychotherapy-session.ics';
     a.click();
-    URL.revokeObjectURL(url);
   }
 
   return (
@@ -63,13 +62,10 @@ export default function SuccessPage() {
       <Head>
         <title>Booking Confirmed | Psychotherapist.sg</title>
       </Head>
-
       <div className="band" />
-
       <div className="header">
         <a href="https://psychotherapist.sg">psychotherapist.sg</a>
       </div>
-
       <div style={{ padding: '4rem 0', textAlign: 'center' }}>
         <div className="wrap">
           <div className="success-check">
@@ -77,22 +73,18 @@ export default function SuccessPage() {
               <polyline points="20 6 9 17 4 12" />
             </svg>
           </div>
-
           <h1>Session <em>Booked</em></h1>
 
-          {!loading && booking && (
-            <p style={{ marginTop: '1rem', fontSize: '1rem' }}>
-              Your deposit has been received and your appointment is confirmed on <strong>{booking.dateFormatted}</strong> at <strong>{booking.timeFormatted}</strong>.
-            </p>
-          )}
-
-          {loading ? (
+          {loading && session_id ? (
             <div className="loading" style={{ marginTop: '2rem' }}>
               <div className="spinner" />
               <p>Loading your booking details...</p>
             </div>
           ) : booking ? (
             <>
+              <p style={{ marginTop: '1rem', fontSize: '1.05rem' }}>
+                Your deposit has been received and your appointment is confirmed on <strong>{booking.dateFormatted}</strong> at <strong>{booking.timeFormatted}</strong>.
+              </p>
               <div className="summary" style={{ textAlign: 'left', marginTop: '2rem' }}>
                 <div className="summary-row">
                   <span className="summary-label">Session</span>
@@ -115,7 +107,6 @@ export default function SuccessPage() {
                   <span className="summary-value">SGD {booking.balanceDue.toFixed(2)}</span>
                 </div>
               </div>
-
               <div style={{ marginTop: '2rem' }}>
                 <p style={{ fontFamily: 'var(--font-heading)', fontStyle: 'italic', color: 'var(--green)', fontSize: '1rem', marginBottom: '0.5rem' }}>
                   73 Eng Watt Street, Tiong Bahru Estate
@@ -124,7 +115,6 @@ export default function SuccessPage() {
                   Tiong Bahru MRT (EW17) · 8 min walk
                 </p>
               </div>
-
               <div style={{ marginTop: '2rem', display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a href={getCalendarLink()} target="_blank" rel="noopener noreferrer" className="btn btn--green">
                   Add to Google Calendar
@@ -135,7 +125,7 @@ export default function SuccessPage() {
               </div>
             </>
           ) : (
-            <p style={{ marginTop: '2rem' }}>
+            <p style={{ marginTop: '1rem' }}>
               Your deposit has been received and your appointment is confirmed.
             </p>
           )}
@@ -143,12 +133,10 @@ export default function SuccessPage() {
           <p style={{ fontSize: '0.82rem', color: 'var(--faint)', marginTop: '2rem' }}>
             Cancellations more than 48 hours before the session are refunded minus Stripe fees.
           </p>
-
           <div style={{ marginTop: '2rem', display: 'flex', gap: '0.8rem', justifyContent: 'center' }}>
             <a href="https://psychotherapist.sg" className="btn btn--outline">Back to Website</a>
             <a href="https://wa.me/6587978848" className="btn btn--green">WhatsApp Me</a>
           </div>
-
           <div style={{ borderTop: '1px solid var(--rule)', marginTop: '3rem', paddingTop: '1.5rem' }}>
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)' }}>
               Nicole Chew-Helbig, PhD · <a href="https://psychotherapist.sg" style={{ color: 'var(--green)' }}>psychotherapist.sg</a>
@@ -156,8 +144,17 @@ export default function SuccessPage() {
           </div>
         </div>
       </div>
-
       <div className="band band--bottom" />
     </>
   );
 }
+```
+
+Also update the cancellation text in `lib/email.js` — find:
+```
+Please arrive 5–10 minutes early. Cancellations less than 48 hours before the session are charged in full.
+```
+
+Replace with:
+```
+Please arrive 5–10 minutes early. Cancellations more than 48 hours before the session are refunded minus Stripe fees.
