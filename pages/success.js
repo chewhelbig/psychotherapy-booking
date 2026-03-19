@@ -149,12 +149,3 @@ export default function SuccessPage() {
   );
 }
 ```
-
-Also update the cancellation text in `lib/email.js` — find:
-```
-Please arrive 5–10 minutes early. Cancellations less than 48 hours before the session are charged in full.
-```
-
-Replace with:
-```
-Please arrive 5–10 minutes early. Cancellations more than 48 hours before the session are refunded minus Stripe fees.
