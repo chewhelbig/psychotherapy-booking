@@ -28,8 +28,8 @@ export default function SuccessPage() {
     var start = booking.slotStart.replace(/[-:]/g, '').replace('+08:00', '');
     var end = booking.slotEnd.replace(/[-:]/g, '').replace('+08:00', '');
     var title = encodeURIComponent(booking.sessionLabel + ' — Nicole Chew-Helbig');
-    var details = encodeURIComponent('73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
-    var location = encodeURIComponent('73 Eng Watt Street, Tiong Bahru Estate, Singapore 160073');
+    var details = encodeURIComponent('65 Tiong Poh Road Eng #02-26, Tiong Bahru Estate, Singapore 160065\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
+    var location = encodeURIComponent('65 Tiong Poh Road Eng #02-26, Tiong Bahru Estate, Singapore 160065');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + title + '&dates=' + start + '/' + end + '&details=' + details + '&location=' + location + '&ctz=Asia/Singapore';
   }
 
