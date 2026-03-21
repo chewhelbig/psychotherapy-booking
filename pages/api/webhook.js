@@ -94,6 +94,21 @@ export default async function handler(req, res) {
       console.error('Email sending failed:', err.message);
     }
   }
+  // 4. Save client to admin contacts
+    try {
+      await fetch('https://admin.psychotherapist.sg/api/custom-clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: clientName,
+          phone: clientPhone,
+          email: clientEmail,
+        }),
+      });
+      console.log('Client saved to admin contacts');
+    } catch (err) {
+      console.error('Save client failed:', err.message);
+    }
 
   res.status(200).json({ received: true });
 }
