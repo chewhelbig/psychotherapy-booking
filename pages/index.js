@@ -142,8 +142,8 @@ export default function BookingPage() {
                   >
                     <h3>{s.label}</h3>
                     <div className="duration">{s.duration}</div>
-                    <div className="fee">${s.fee}</div>
-                    <div className="deposit">25% deposit: ${s.deposit.toFixed(2)}</div>
+                    <div className="fee">SGD {s.fee}</div>
+                    <div className="deposit">25% deposit: SGD {s.deposit.toFixed(2)}</div>
                   </div>
                 ))}
               </div>
@@ -308,7 +308,7 @@ export default function BookingPage() {
           {/* Footer */}
           <div style={{ borderTop: '1px solid var(--rule)', marginTop: '3rem', paddingTop: '1.5rem', textAlign: 'center' }}>
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)' }}>
-              Cancellations less than 48 hours before the session are charged in full.
+              Cancellations more than 48 hours before the session are refunded minus Stripe processing fees.
             </p>
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               <a href="https://psychotherapist.sg" style={{ color: 'var(--green)' }}>psychotherapist.sg</a> · Nicole Chew-Helbig, PhD
