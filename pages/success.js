@@ -28,8 +28,8 @@ export default function SuccessPage() {
     var start = booking.slotStart.replace(/[-:]/g, '').replace('+08:00', '');
     var end = booking.slotEnd.replace(/[-:]/g, '').replace('+08:00', '');
     var title = encodeURIComponent(booking.sessionLabel + ' — Nicole Chew-Helbig');
-    var details = encodeURIComponent('65 Tiong Poh Road Eng #02-26, Tiong Bahru Estate, Singapore 160065\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
-    var location = encodeURIComponent('65 Tiong Poh Road Eng #02-26, Tiong Bahru Estate, Singapore 160065');
+    var details = encodeURIComponent('20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
+    var location = encodeURIComponent('20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + title + '&dates=' + start + '/' + end + '&details=' + details + '&location=' + location + '&ctz=Asia/Singapore';
   }
 
@@ -44,7 +44,7 @@ export default function SuccessPage() {
       'DTSTART;TZID=Asia/Singapore:' + start,
       'DTEND;TZID=Asia/Singapore:' + end,
       'SUMMARY:' + booking.sessionLabel + ' — Nicole Chew-Helbig',
-      'LOCATION:65 Tiong Poh Road #02-26, Tiong Bahru Estate Singapore 160065',
+      'LOCATION:20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416',
       'DESCRIPTION:Balance due SGD ' + booking.balanceDue.toFixed(2),
       'END:VEVENT',
       'END:VCALENDAR'
@@ -109,10 +109,10 @@ export default function SuccessPage() {
               </div>
               <div style={{ marginTop: '2rem' }}>
                 <p style={{ fontFamily: 'var(--font-heading)', fontStyle: 'italic', color: 'var(--green)', fontSize: '1rem', marginBottom: '0.5rem' }}>
-                  65 Tiong Poh Road #02-26, Tiong Bahru Estate
+                  20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416
                 </p>
                 <p style={{ fontSize: '0.85rem', color: 'var(--faint)' }}>
-                  Havelock MRT / Near Tiong Bahru Market
+                  Clarke Quay MRT
                 </p>
               </div>
               <div style={{ marginTop: '2rem', display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
