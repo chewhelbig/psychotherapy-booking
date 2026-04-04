@@ -310,9 +310,13 @@ export default function BookingPage() {
             <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
               20 Upper Circular Road #01-12/13, Singapore 058416
             </p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--green)', marginTop: '0.5rem', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
+            Notice: I'm moving to Tiong Bahru on 01 July 2026
+            </p>      
+    
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               Cancellations more than 48 hours before the session are refunded minus Stripe processing fees.
-            </p>
+            </p>      
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               <a href="https://psychotherapist.sg" style={{ color: 'var(--green)' }}>psychotherapist.sg</a> · Nicole Chew-Helbig, PhD
             </p>
