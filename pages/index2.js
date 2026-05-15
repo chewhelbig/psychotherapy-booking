@@ -9,37 +9,19 @@ const SESSIONS = {
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-// ─── Office relocation ──────────────────────────────────────────
-// 15–21 June 2026: online via Zoom (final week at old office, packing).
-// 22–30 June 2026: in-person at new Tiong Bahru address (settling in).
-// From 1 July onwards: new address is the default — footer-only.
-// ────────────────────────────────────────────────────────────────
-const ZOOM_PERIOD = {
+// ─── Office relocation: online-only window ────────────────────────
+const RELOCATION = {
   start: '2026-06-15T00:00:00+08:00',
-  end:   '2026-06-21T23:59:59+08:00',
-};
-const NEW_OFFICE_NOTICE_PERIOD = {
-  start: '2026-06-22T00:00:00+08:00',
   end:   '2026-06-30T23:59:59+08:00',
 };
-const MOVE_DATE = '2026-06-22T00:00:00+08:00';
-const RELOCATION_BANNER_END = '2026-06-30T23:59:59+08:00';
-
-function isInZoomPeriod(date) {
+function isInRelocationPeriod(date) {
   if (!date) return false;
-  return date >= new Date(ZOOM_PERIOD.start) && date <= new Date(ZOOM_PERIOD.end);
+  return date >= new Date(RELOCATION.start) && date <= new Date(RELOCATION.end);
 }
-function isInNewOfficeNoticePeriod(date) {
-  if (!date) return false;
-  return date >= new Date(NEW_OFFICE_NOTICE_PERIOD.start) && date <= new Date(NEW_OFFICE_NOTICE_PERIOD.end);
+function relocationStillUpcoming() {
+  return new Date() <= new Date(RELOCATION.end);
 }
-function relocationBannerStillRelevant() {
-  return new Date() <= new Date(RELOCATION_BANNER_END);
-}
-function moveComplete() {
-  return new Date() >= new Date(MOVE_DATE);
-}
-// ────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────
 
 export default function BookingPage() {
   const [step, setStep] = useState(1);
@@ -135,11 +117,8 @@ export default function BookingPage() {
   const canProceedToStep2 = sessionType !== null;
   const canProceedToStep3 = selectedSlot !== null;
   const session = sessionType ? SESSIONS[sessionType] : null;
-
-  const slotIsZoom = selectedSlot && isInZoomPeriod(new Date(selectedSlot.start));
-  const slotIsNewOfficeNotice = selectedSlot && isInNewOfficeNoticePeriod(new Date(selectedSlot.start));
-  const dateIsZoom = selectedDate && isInZoomPeriod(selectedDate);
-  const dateIsNewOfficeNotice = selectedDate && isInNewOfficeNoticePeriod(selectedDate);
+  const slotIsOnline = selectedSlot && isInRelocationPeriod(new Date(selectedSlot.start));
+  const dateIsOnline = selectedDate && isInRelocationPeriod(selectedDate);
 
   return (
     <>
@@ -160,7 +139,7 @@ export default function BookingPage() {
           <h1>Schedule Your <em>Session</em></h1>
 
           {/* ─── Office relocation banner (auto-hides after 30 June 2026) ─── */}
-          {relocationBannerStillRelevant() && (
+          {relocationStillUpcoming() && (
             <div style={{
               background: '#fdf6e3',
               borderLeft: '3px solid #3d6b50',
@@ -171,7 +150,7 @@ export default function BookingPage() {
               color: '#2a2822',
               lineHeight: 1.5,
             }}>
-              <strong>Office relocation:</strong> sessions on <strong>15&ndash;21 June 2026</strong> will be online via Zoom. From <strong>22 June 2026</strong>, sessions move to the new Tiong Bahru office at 65 Tiong Poh Road, #02-26.
+              <strong>Office relocation:</strong> sessions between <strong>15&ndash;30 June 2026</strong> will be online only via Zoom while I move to Tiong Bahru.
             </div>
           )}
 
@@ -246,8 +225,8 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              {/* Online-only notice when selected date is in the Zoom phase (15–21 June) */}
-              {dateIsZoom && (
+              {/* Online-only notice when selected date is in relocation window */}
+              {dateIsOnline && (
                 <div style={{
                   background: '#eef4f0',
                   borderLeft: '3px solid #3d6b50',
@@ -258,23 +237,7 @@ export default function BookingPage() {
                   color: '#2a2822',
                   lineHeight: 1.5,
                 }}>
-                  This session will be <strong>online via Zoom</strong> — I'm relocating my office between 15&ndash;21 June 2026. The Zoom link will be in your confirmation email.
-                </div>
-              )}
-
-              {/* New-office address notice when selected date is 22–30 June */}
-              {dateIsNewOfficeNotice && (
-                <div style={{
-                  background: '#eaf2f8',
-                  borderLeft: '3px solid #2e5a85',
-                  padding: '0.75rem 1rem',
-                  margin: '1.2rem 0 0',
-                  borderRadius: '2px',
-                  fontSize: '0.88rem',
-                  color: '#2a2822',
-                  lineHeight: 1.5,
-                }}>
-                  <strong>Address:</strong> 65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065. <span style={{ color: '#5a6a7a' }}>(New office from 22 June 2026)</span>
+                  This session will be <strong>online via Zoom</strong> — I'm relocating my office between 15&ndash;30 June 2026. The Zoom link will be in your confirmation email.
                 </div>
               )}
 
@@ -342,7 +305,7 @@ export default function BookingPage() {
                   <span className="summary-label">Time</span>
                   <span className="summary-value">{selectedSlot.label}</span>
                 </div>
-                {slotIsZoom && (
+                {slotIsOnline && (
                   <div className="summary-row">
                     <span className="summary-label">Format</span>
                     <span className="summary-value">Online via Zoom</span>
@@ -358,8 +321,8 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              {/* Online-only reminder in step 3 — Zoom phase */}
-              {slotIsZoom && (
+              {/* Online-only reminder in step 3 */}
+              {slotIsOnline && (
                 <div style={{
                   background: '#eef4f0',
                   borderLeft: '3px solid #3d6b50',
@@ -371,22 +334,6 @@ export default function BookingPage() {
                   lineHeight: 1.5,
                 }}>
                   This is an <strong>online session via Zoom</strong>. You'll receive the Zoom link in your confirmation email.
-                </div>
-              )}
-
-              {/* New-office address reminder in step 3 — 22–30 June */}
-              {slotIsNewOfficeNotice && (
-                <div style={{
-                  background: '#eaf2f8',
-                  borderLeft: '3px solid #2e5a85',
-                  padding: '0.75rem 1rem',
-                  margin: '0 0 1.2rem',
-                  borderRadius: '2px',
-                  fontSize: '0.88rem',
-                  color: '#2a2822',
-                  lineHeight: 1.5,
-                }}>
-                  <strong>Address:</strong> 65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065. <span style={{ color: '#5a6a7a' }}>(New office from 22 June 2026)</span>
                 </div>
               )}
 
@@ -428,26 +375,18 @@ export default function BookingPage() {
             </div>
           )}
 
-          {/* Footer — address switches automatically on 22 June 2026 */}
+          {/* Footer */}
           <div style={{ borderTop: '1px solid var(--rule)', marginTop: '3rem', paddingTop: '1.5rem', textAlign: 'center' }}>
-            {!moveComplete() ? (
-              <>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                  20 Upper Circular Road #01-12/13, Singapore 058416
-                </p>
-                <p style={{ fontSize: '0.85rem', color: 'var(--green)', marginTop: '0.5rem', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                  From 22 June 2026: 65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065
-                </p>
-              </>
-            ) : (
-              <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065
-              </p>
-            )}
-
+            <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
+              20 Upper Circular Road #01-12/13, Singapore 058416
+            </p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--green)', marginTop: '0.5rem', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
+            Notice: I'm moving to Tiong Bahru on 01 July 2026
+            </p>      
+    
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               Cancellations more than 48 hours before the session are refunded minus Stripe processing fees.
-            </p>
+            </p>      
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               <a href="https://psychotherapist.sg" style={{ color: 'var(--green)' }}>psychotherapist.sg</a> · Nicole Chew-Helbig, PhD
             </p>
