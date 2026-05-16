@@ -12,7 +12,11 @@ const MONTHS = ['January','February','March','April','May','June','July','August
 // ─── Office relocation ──────────────────────────────────────────
 // 15–21 June 2026: online via Zoom (final week at old office, packing).
 // 22–30 June 2026: in-person at new Tiong Bahru address (settling in).
-// From 1 July onwards: new address is the default — footer-only.
+//                  → Step 2/3 contextual notices appear in this window.
+//
+// Footer switches to new-address-only on 15 June 2026.
+// Top banner switches from dual-phase to "NEW LOCATION" on 22 June 2026,
+// then stays visible indefinitely (remove manually when ready).
 // ────────────────────────────────────────────────────────────────
 const ZOOM_PERIOD = {
   start: '2026-06-15T00:00:00+08:00',
@@ -22,8 +26,8 @@ const NEW_OFFICE_NOTICE_PERIOD = {
   start: '2026-06-22T00:00:00+08:00',
   end:   '2026-06-30T23:59:59+08:00',
 };
-const MOVE_DATE = '2026-06-22T00:00:00+08:00';
-const RELOCATION_BANNER_END = '2026-06-30T23:59:59+08:00';
+const FOOTER_NEW_ADDRESS_FROM = '2026-06-15T00:00:00+08:00';
+const MOVE_DATE               = '2026-06-22T00:00:00+08:00';
 
 function isInZoomPeriod(date) {
   if (!date) return false;
@@ -33,11 +37,13 @@ function isInNewOfficeNoticePeriod(date) {
   if (!date) return false;
   return date >= new Date(NEW_OFFICE_NOTICE_PERIOD.start) && date <= new Date(NEW_OFFICE_NOTICE_PERIOD.end);
 }
-function relocationBannerStillRelevant() {
-  return new Date() <= new Date(RELOCATION_BANNER_END);
+function bannerPhase() {
+  const now = new Date();
+  if (now >= new Date(MOVE_DATE)) return 'new-location';
+  return 'transition';
 }
-function moveComplete() {
-  return new Date() >= new Date(MOVE_DATE);
+function footerShowsNewAddressOnly() {
+  return new Date() >= new Date(FOOTER_NEW_ADDRESS_FROM);
 }
 // ────────────────────────────────────────────────────────────────
 
@@ -141,6 +147,8 @@ export default function BookingPage() {
   const dateIsZoom = selectedDate && isInZoomPeriod(selectedDate);
   const dateIsNewOfficeNotice = selectedDate && isInNewOfficeNoticePeriod(selectedDate);
 
+  const currentBannerPhase = bannerPhase();
+
   return (
     <>
       <Head>
@@ -159,8 +167,11 @@ export default function BookingPage() {
           <p className="label">Book an Appointment</p>
           <h1>Schedule Your <em>Session</em></h1>
 
-          {/* ─── Office relocation banner (auto-hides after 30 June 2026) ─── */}
-          {relocationBannerStillRelevant() && (
+          {/* ─── Office relocation banner ─── */}
+          {/*  Until 21 June: dual-phase notice (Zoom phase + upcoming move).         */}
+          {/*  22 – 30 June:  "NEW LOCATION" notice.                                  */}
+          {/*  After 30 June: banner hidden.                                          */}
+          {currentBannerPhase === 'transition' && (
             <div style={{
               background: '#fdf6e3',
               borderLeft: '3px solid #3d6b50',
@@ -172,6 +183,20 @@ export default function BookingPage() {
               lineHeight: 1.5,
             }}>
               <strong>Office relocation:</strong> sessions on <strong>15&ndash;21 June 2026</strong> will be online via Zoom. From <strong>22 June 2026</strong>, sessions move to the new Tiong Bahru office at 65 Tiong Poh Road, #02-26.
+            </div>
+          )}
+          {currentBannerPhase === 'new-location' && (
+            <div style={{
+              background: '#fdf6e3',
+              borderLeft: '3px solid #3d6b50',
+              padding: '0.85rem 1rem',
+              margin: '1rem 0 0',
+              borderRadius: '2px',
+              fontSize: '0.92rem',
+              color: '#2a2822',
+              lineHeight: 1.5,
+            }}>
+              <strong>NEW LOCATION:</strong> From 22 June 2026, we&rsquo;ll meet in Tiong Bahru: 65 Tiong Poh Road, #02-26, Singapore 160065.
             </div>
           )}
 
@@ -428,9 +453,9 @@ export default function BookingPage() {
             </div>
           )}
 
-          {/* Footer — address switches automatically on 22 June 2026 */}
+          {/* Footer — address switches automatically on 15 June 2026 */}
           <div style={{ borderTop: '1px solid var(--rule)', marginTop: '3rem', paddingTop: '1.5rem', textAlign: 'center' }}>
-            {!moveComplete() ? (
+            {!footerShowsNewAddressOnly() ? (
               <>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
                   20 Upper Circular Road #01-12/13, Singapore 058416
