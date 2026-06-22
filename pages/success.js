@@ -28,8 +28,8 @@ export default function SuccessPage() {
     var start = booking.slotStart.replace(/[-:]/g, '').replace('+08:00', '');
     var end = booking.slotEnd.replace(/[-:]/g, '').replace('+08:00', '');
     var title = encodeURIComponent(booking.sessionLabel + ' — Nicole Chew-Helbig');
-    var details = encodeURIComponent('20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
-    var location = encodeURIComponent('20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416');
+    var details = encodeURIComponent('65 Tiong Poh Road #02-26, Singapore 160065\n\nBalance due: SGD ' + booking.balanceDue.toFixed(2));
+    var location = encodeURIComponent('65 Tiong Poh Road #02-26, Singapore 160065');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + title + '&dates=' + start + '/' + end + '&details=' + details + '&location=' + location + '&ctz=Asia/Singapore';
   }
 
@@ -44,7 +44,7 @@ export default function SuccessPage() {
       'DTSTART;TZID=Asia/Singapore:' + start,
       'DTEND;TZID=Asia/Singapore:' + end,
       'SUMMARY:' + booking.sessionLabel + ' — Nicole Chew-Helbig',
-      'LOCATION:20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416',
+      'LOCATION:65 Tiong Poh Road #02-26, Singapore 160065',
       'DESCRIPTION:Balance due SGD ' + booking.balanceDue.toFixed(2),
       'END:VEVENT',
       'END:VCALENDAR'
@@ -109,7 +109,7 @@ export default function SuccessPage() {
               </div>
               <div style={{ marginTop: '2rem' }}>
                 <p style={{ fontFamily: 'var(--font-heading)', fontStyle: 'italic', color: 'var(--green)', fontSize: '1rem', marginBottom: '0.5rem' }}>
-                  20 Upper Circular Road 01-12, The Riverwalk Mall. Singapore 058416
+                  65 Tiong Poh Road #02-26, Singapore 160065
                 </p>
                 <p style={{ fontSize: '0.85rem', color: 'var(--faint)' }}>
                   Clarke Quay MRT
