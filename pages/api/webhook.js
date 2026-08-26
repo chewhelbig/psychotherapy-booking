@@ -1,6 +1,5 @@
 import Stripe from 'stripe';
 import { createEvent } from '../../lib/calendar';
-import { buildWhatsAppMessage, sendWhatsAppNotification } from '../../lib/whatsapp';
 import { sendBookingEmails } from '../../lib/email';
 import { SCHEDULE } from '../../lib/schedule';
 
@@ -64,22 +63,7 @@ export default async function handler(req, res) {
       console.error('Calendar event creation failed:', err.message);
     }
 
-    // 2. Send WhatsApp notification
-    try {
-      var msg = buildWhatsAppMessage({
-        sessionType: sessionType,
-        clientName: clientName,
-        clientPhone: clientPhone,
-        clientEmail: clientEmail,
-        slotStart: slotStart,
-        reason: reason,
-      });
-      await sendWhatsAppNotification(msg);
-    } catch (err) {
-      console.error('WhatsApp notification failed:', err.message);
-    }
-
-    // 3. Send confirmation emails
+    // 2. Send confirmation emails
     try {
       await sendBookingEmails({
         clientName: clientName,
@@ -93,8 +77,8 @@ export default async function handler(req, res) {
     } catch (err) {
       console.error('Email sending failed:', err.message);
     }
-  }
-  // 4. Save client to admin contacts
+
+    // 3. Save client to admin contacts
     try {
       await fetch('https://admin.psychotherapist.sg/api/custom-clients', {
         method: 'POST',
@@ -109,6 +93,7 @@ export default async function handler(req, res) {
     } catch (err) {
       console.error('Save client failed:', err.message);
     }
+  }
 
   res.status(200).json({ received: true });
 }
