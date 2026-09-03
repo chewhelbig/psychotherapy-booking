@@ -9,44 +9,6 @@ const SESSIONS = {
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-// ─── Office relocation ──────────────────────────────────────────
-// 15–21 June 2026: online via Zoom (final week at old office, packing).
-// 22–30 June 2026: in-person at new Tiong Bahru address (settling in).
-//                  → Step 2/3 contextual notices appear in this window.
-//
-// Footer switches to new-address-only on 15 June 2026.
-// Top banner switches from dual-phase to "NEW LOCATION" on 22 June 2026,
-// then stays visible indefinitely (remove manually when ready).
-// ────────────────────────────────────────────────────────────────
-const ZOOM_PERIOD = {
-  start: '2026-06-15T00:00:00+08:00',
-  end:   '2026-06-21T23:59:59+08:00',
-};
-const NEW_OFFICE_NOTICE_PERIOD = {
-  start: '2026-06-22T00:00:00+08:00',
-  end:   '2026-06-30T23:59:59+08:00',
-};
-const FOOTER_NEW_ADDRESS_FROM = '2026-06-15T00:00:00+08:00';
-const MOVE_DATE               = '2026-06-22T00:00:00+08:00';
-
-function isInZoomPeriod(date) {
-  if (!date) return false;
-  return date >= new Date(ZOOM_PERIOD.start) && date <= new Date(ZOOM_PERIOD.end);
-}
-function isInNewOfficeNoticePeriod(date) {
-  if (!date) return false;
-  return date >= new Date(NEW_OFFICE_NOTICE_PERIOD.start) && date <= new Date(NEW_OFFICE_NOTICE_PERIOD.end);
-}
-function bannerPhase() {
-  const now = new Date();
-  if (now >= new Date(MOVE_DATE)) return 'new-location';
-  return 'transition';
-}
-function footerShowsNewAddressOnly() {
-  return new Date() >= new Date(FOOTER_NEW_ADDRESS_FROM);
-}
-// ────────────────────────────────────────────────────────────────
-
 export default function BookingPage() {
   const [step, setStep] = useState(1);
   const [sessionType, setSessionType] = useState(null);
