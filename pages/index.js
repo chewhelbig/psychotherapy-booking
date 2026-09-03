@@ -277,7 +277,13 @@ export default function BookingPage() {
                       <p>Checking availability…</p>
                     </div>
                   ) : slots.length === 0 ? (
-                    <p style={{ color: 'var(--faint)', padding: '1rem 0' }}>No available slots on this date. Please try another day.</p>
+                    <div style={{ padding: '1rem 0' }}>
+                      <p style={{ color: 'var(--faint)', margin: 0 }}>No available times on this date.</p>
+                      <p style={{ color: 'var(--faint)', margin: '0.5rem 0 0', fontSize: '0.9rem' }}>
+                        Try another day — or if nothing suits, or you need to be seen sooner,{' '}
+                        <a href="https://wa.me/6587978848" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--green)' }}>WhatsApp me</a>. There are often times that aren&rsquo;t listed.
+                      </p>
+                    </div>
                   ) : (
                     <div className="slots">
                       {slots.map(slot => (
