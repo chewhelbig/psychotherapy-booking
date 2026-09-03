@@ -471,7 +471,7 @@ export default function BookingPage() {
             )}
 
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
-              Cancellations more than 48 hours before the session are refunded minus Stripe processing fees.
+              Cancel or move a session more than 48 hours ahead and your deposit is refunded, less Stripe&rsquo;s processing fee. Inside 48 hours the session is charged in full.
             </p>
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               <a href="https://psychotherapist.sg" style={{ color: 'var(--green)' }}>psychotherapist.sg</a> · Nicole Chew-Helbig, PhD
