@@ -417,20 +417,9 @@ export default function BookingPage() {
 
           {/* Footer — address switches automatically on 15 June 2026 */}
           <div style={{ borderTop: '1px solid var(--rule)', marginTop: '3rem', paddingTop: '1.5rem', textAlign: 'center' }}>
-            {!footerShowsNewAddressOnly() ? (
-              <>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                  20 Upper Circular Road #01-12/13, Singapore 058416
-                </p>
-                <p style={{ fontSize: '0.85rem', color: 'var(--green)', marginTop: '0.5rem', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                  From 22 June 2026: 65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065
-                </p>
-              </>
-            ) : (
-              <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
-                65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065
-              </p>
-            )}
+            <p style={{ fontSize: '0.85rem', color: 'var(--text)', fontFamily: 'var(--font-heading)', fontStyle: 'italic' }}>
+              65 Tiong Poh Road, #02-26, Tiong Bahru Estate, Singapore 160065
+            </p>
 
             <p style={{ fontSize: '0.78rem', color: 'var(--faint)', marginTop: '0.5rem' }}>
               Cancel or move a session more than 48 hours ahead and your deposit is refunded, less Stripe&rsquo;s processing fee. Inside 48 hours the session is charged in full.
