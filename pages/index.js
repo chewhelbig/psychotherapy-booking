@@ -9,6 +9,34 @@ const SESSIONS = {
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+// ---- Office relocation dates (Singapore time) ----
+// Zoom phase:         15-21 June 2026
+// New-address notice: 22-30 June 2026
+// After 30 June:      no banner
+
+const ZOOM_START = new Date('2026-06-15T00:00:00+08:00');
+const ZOOM_END   = new Date('2026-06-22T00:00:00+08:00');
+const NOTICE_END = new Date('2026-07-01T00:00:00+08:00');
+
+function isInZoomPeriod(date) {
+  if (!date) return false;
+  const d = new Date(date);
+  return d >= ZOOM_START && d < ZOOM_END;
+}
+
+function isInNewOfficeNoticePeriod(date) {
+  if (!date) return false;
+  const d = new Date(date);
+  return d >= ZOOM_END && d < NOTICE_END;
+}
+
+function bannerPhase() {
+  const now = new Date();
+  if (now < ZOOM_END) return 'transition';
+  if (now < NOTICE_END) return 'new-location';
+  return null;
+}
+
 export default function BookingPage() {
   const [step, setStep] = useState(1);
   const [sessionType, setSessionType] = useState(null);
