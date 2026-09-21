@@ -247,19 +247,25 @@ export default function BookingPage() {
                   {Array.from({ length: getFirstDayOfMonth(currentMonth) }).map((_, i) => (
                     <div key={`e${i}`} className="cal-day empty" />
                   ))}
+
                   {Array.from({ length: getDaysInMonth(currentMonth) }).map((_, i) => {
                     const day = i + 1;
                     const past = isPast(day);
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={day}
+                        disabled={past}
+                        aria-pressed={isSameDate(day)}
+                        aria-label={`${day} ${MONTHS[currentMonth.getMonth()]} ${currentMonth.getFullYear()}`}
                         className={`cal-day ${!past ? 'available' : ''} ${isToday(day) ? 'today' : ''} ${isSameDate(day) ? 'selected' : ''}`}
-                        onClick={() => !past && selectDate(day)}
+                        onClick={() => selectDate(day)}
                       >
                         {day}
-                      </div>
+                      </button>
                     );
                   })}
+                
                 </div>
               </div>
 
