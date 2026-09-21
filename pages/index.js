@@ -321,15 +321,18 @@ export default function BookingPage() {
                       </p>
                     </div>
                   ) : (
+
                     <div className="slots">
                       {slots.map(slot => (
-                        <div
+                        <button
+                          type="button"
                           key={slot.start}
+                          aria-pressed={selectedSlot?.start === slot.start}
                           className={`slot ${selectedSlot?.start === slot.start ? 'selected' : ''}`}
                           onClick={() => setSelectedSlot(slot)}
                         >
                           {slot.label}
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )}
