@@ -203,16 +203,18 @@ export default function BookingPage() {
               <h2 style={{ marginTop: '2rem' }}>Choose your session type</h2>
               <div className="type-cards">
                 {Object.entries(SESSIONS).map(([key, s]) => (
-                  <div
+                  <button
+                    type="button"
                     key={key}
                     className={`type-card ${sessionType === key ? 'selected' : ''}`}
+                    aria-pressed={sessionType === key}
                     onClick={() => setSessionType(key)}
                   >
-                    <h3>{s.label}</h3>
-                    <div className="duration">{s.duration}</div>
-                    <div className="fee">SGD {s.fee}</div>
-                    <div className="deposit">25% deposit: SGD {s.deposit.toFixed(2)}</div>
-                  </div>
+                    <span className="type-title">{s.label}</span>
+                    <span className="duration">{s.duration}</span>
+                    <span className="fee">SGD {s.fee}</span>
+                    <span className="deposit">25% deposit: SGD {s.deposit.toFixed(2)}</span>
+                  </button>
                 ))}
               </div>
               <button
